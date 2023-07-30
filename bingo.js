@@ -7,14 +7,23 @@ function create_boards()
     {
         var used_numbers = [];
         var id = i.toString();
-        var board = [];
+        var board = [[],[],[],[],[]];
+        board.unshift(id);
+        console.log(board);
         for(l = 1; l<6; l++)
         {
-            for(n = ((15*l - 15) + 1); n<((15*l) + 1); n++)
+            for(n = 0; n<5; n++)
             {
-                var newnum = random((15*l - 15), ((15*l) + 1));
+                var newnum = random(((15*l - 15) + 1), ((15*l) + 1));
+                while(used_numbers.includes(newnum))
+                {
+                    newnum = random(((15*l - 15) + 1), ((15*l) + 1));
+                }
+                used_numbers.push(newnum);
+                board[l].push(newnum);
             }
         }
+        boards.push(board);
     }
 }
 

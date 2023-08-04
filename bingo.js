@@ -2,8 +2,10 @@ var number_of_boards; //needs to be at least one
 var boards = []; //contains all the current boards
 var played_nums = []; //contains all the already played numbers
 var bingo_letters = ["B", "I", "N", "G", "O"]; //this is useful to log things on the console
-var win_conditions = [wc_bingo]; //contains the functions of all win conditions
+var win_conditions = [wc_bingo, wc_full_table, wc_four_corners, wc_linked_four_corners]; //contains the functions of all win conditions
 var curr_wc = 0; //current win condition is normal bingo
+
+console.log("Current win condition is " + win_conditions[curr_wc].name);
 
 function create_boards() //creates a number of boards depending on number_of_boards
 {
@@ -78,28 +80,72 @@ function random(min, max) //randomize function
 //WIN CONDITIONS
 function wc_bingo() //normal bingo win condition
 {
-    for(i=0; i<boards.length; i++)
+    if(played_nums.length >= 5)
     {
-        for(l=1; l<=5; l++)
+        for(i=0; i<boards.length; i++)
         {
-            if(boards[i][l].every(element => element === "X")) //bingo on one letter
+            for(l=1; l<=5; l++)
             {
-                console.log("Bingo on board " + i);
+                if(boards[i][l].every(element => element === "X")) //bingo on one letter
+                {
+                    console.log("Bingo on board " + i);
+                }
+                if(boards[i][1][l] === "X" && boards[i][2][l] === "X" && boards[i][3][l] === "X" && boards[i][4][l] === "X" && boards[i][5][l] === "X") //sideways bingo
+                {
+                    console.log("sideways bingo on board " + i);
+                }
             }
-            if(boards[i][1][l] === "X" && boards[i][2][l] === "X" && boards[i][3][l] === "X" && boards[i][4][l] === "X" && boards[i][5][l] === "X") //sideways bingo
+            //diagonal bingo. We don't check boards[i][3][2] because it is the center and already has an "X"
+            if(boards[i][1][0] === "X" && boards[i][2][1] === "X" && boards[i][4][3] === "X" && boards[i][5][4] === "X")
             {
-                console.log("sideways bingo on board " + i);
+                console.log("Diagonal bingo on board " + i);
             }
-        }
-        //diagonal bingo. We don't check boards[i][3][2] because it is the center and already has an "X"
-        if(boards[i][1][0] === "X" && boards[i][2][1] === "X" && boards[i][4][3] === "X" && boards[i][5][4] === "X")
-        {
-            console.log("Diagonal bingo on board " + i);
-        }
-        if(boards[i][5][4] === "X" && boards[i][4][3] === "X" && boards[i][2][1] === "X" && boards[i][1][0] === "X")
-        {
-            console.log("Diagonal bingo on board " + i);
+            if(boards[i][5][4] === "X" && boards[i][4][3] === "X" && boards[i][2][1] === "X" && boards[i][1][0] === "X")
+            {
+                console.log("Diagonal bingo on board " + i);
+            }
         }
     }
 }
 
+function wc_full_table()
+{
+    if(played_nums.length >= 24)
+    {
+        for(i=0; i<boards.length; i++)
+        {
+            if(boards[i][1].every(element => element === "X") && boards[i][2].every(element => element === "X") && boards[i][3].every(element => element === "X") && boards[i][4].every(element => element === "X") && boards[i][5].every(element => element === "X"))
+            {
+                console.log("Full table on board " + i);
+            }
+        }
+    }
+}
+
+function wc_four_corners()
+{
+    if(played_nums.length >= 4)
+    {
+        for(i=0; i<boards.length; i++)
+        {
+            if(boards[i][1][0] === "X" && boards[i][1][4] === "X" && boards[i][5][0] === "X" && boards[i][5][4] === "X")
+            {
+                console.log("Four corners on board " + i);
+            }
+        }
+    }
+}
+
+function wc_linked_four_corners()
+{
+    if(played_nums.length >= 16)
+    {
+        for(i=0; i<boards.length; i++)
+        {
+            if(boards[i][1].every(element => element === "X") && boards[i][5].every(element => element === "X") && boards[i][2][0] === "X" && boards[i][2][4] === "X" && boards[i][3][0] === "X" && boards[i][3][4] === "X" && boards[i][4][0] === "X" && boards[i][4][4] === "X")
+            {
+                console.log("Linked four corners on board " + i);
+            }
+        }
+    }
+}

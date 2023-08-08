@@ -22,7 +22,7 @@ function create_boards() //creates a number of boards depending on number_of_boa
         {
             for(n = 0; n<5; n++)
             {
-                var newnum = random(((15 * l - 15) + 1), ((15 * l) + 1)); //creates a new number based on the letter
+                var newnum = random(((15 * l - 15) + 1), (15 * l)); //creates a new number based on the letter
                 while(used_numbers.includes(newnum))
                 {
                     newnum = random(((15 * l - 15) + 1), (15 * l)); //if the  number already exists in the table, another one is created
@@ -36,6 +36,7 @@ function create_boards() //creates a number of boards depending on number_of_boa
     }
     for(i=0; i<boards.length; i++) //function that already puts a chip in the center of the board
     {
+        boards_index[boards[i][3][2]].splice(boards_index[boards[i][3][2]].indexOf(i), 1);
         boards[i][3][2] = "X";
     }
 }

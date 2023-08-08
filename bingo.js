@@ -5,6 +5,8 @@ var bingo_letters = ["B", "I", "N", "G", "O"]; //this is useful to log things on
 var win_conditions = [wc_bingo, wc_full_table, wc_four_corners, wc_linked_four_corners]; //contains the functions of all win conditions
 var curr_wc = 0; //current win condition is normal bingo
 
+var boards_index = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+
 console.log("Current win condition is " + win_conditions[curr_wc].name);
 
 function create_boards() //creates a number of boards depending on number_of_boards
@@ -27,6 +29,7 @@ function create_boards() //creates a number of boards depending on number_of_boa
                 }
                 used_numbers.push(newnum); //pushes the new number inside the used_numbers array
                 board[l].push(newnum); //pushes the new number inside its letter array
+                boards_index[newnum].push(id);
             }
         }
         boards.push(board); //pushes the new board inside the boards array
@@ -61,12 +64,10 @@ function play_chip() //normal function to pick a chip randomly
 
 function check_boards(ltr, nm) //puts chips in played numbers
 {
-    for(i=0; i<boards.length; i++) //checks each board
+    for(i=0; i<boards_index[nm].length; i++)
     {
-        if(boards[i][ltr].includes(nm)) //if it includes the number...
-        {
-            boards[i][ltr][boards[i][ltr].indexOf(nm)] = "X"; //it marks it as "X"
-        }
+        boards[boards_index[nm][i]][ltr][boards[boards_index[nm][i]][ltr].indexOf(nm)] = "X";
+        boards[0][1][boards[0][1][boards[0][1].indexOf(56)]]
     }
     console.table(boards[0]);
 }
@@ -88,21 +89,21 @@ function wc_bingo() //normal bingo win condition
             {
                 if(boards[i][l].every(element => element === "X")) //bingo on one letter
                 {
-                    console.log("Bingo on board " + i);
+                    console.log("%c Bingo on board " + i, "color:green");
                 }
                 if(boards[i][1][l] === "X" && boards[i][2][l] === "X" && boards[i][3][l] === "X" && boards[i][4][l] === "X" && boards[i][5][l] === "X") //sideways bingo
                 {
-                    console.log("sideways bingo on board " + i);
+                    console.log("%c Sideways bingo on board " + i, "color:green");
                 }
             }
             //diagonal bingo. We don't check boards[i][3][2] because it is the center and already has an "X"
             if(boards[i][1][0] === "X" && boards[i][2][1] === "X" && boards[i][4][3] === "X" && boards[i][5][4] === "X")
             {
-                console.log("Diagonal bingo on board " + i);
+                console.log("%c Diagonal bingo on board " + i, "color:green");
             }
             if(boards[i][5][4] === "X" && boards[i][4][3] === "X" && boards[i][2][1] === "X" && boards[i][1][0] === "X")
             {
-                console.log("Diagonal bingo on board " + i);
+                console.log("%c Diagonal bingo on board " + i, "color:green");
             }
         }
     }
@@ -116,7 +117,7 @@ function wc_full_table()
         {
             if(boards[i][1].every(element => element === "X") && boards[i][2].every(element => element === "X") && boards[i][3].every(element => element === "X") && boards[i][4].every(element => element === "X") && boards[i][5].every(element => element === "X"))
             {
-                console.log("Full table on board " + i);
+                console.log("%c Full table on board " + i, "color:green");
             }
         }
     }
@@ -130,7 +131,7 @@ function wc_four_corners()
         {
             if(boards[i][1][0] === "X" && boards[i][1][4] === "X" && boards[i][5][0] === "X" && boards[i][5][4] === "X")
             {
-                console.log("Four corners on board " + i);
+                console.log("%c Four corners on board " + i, "color:green");
             }
         }
     }
@@ -144,7 +145,7 @@ function wc_linked_four_corners()
         {
             if(boards[i][1].every(element => element === "X") && boards[i][5].every(element => element === "X") && boards[i][2][0] === "X" && boards[i][2][4] === "X" && boards[i][3][0] === "X" && boards[i][3][4] === "X" && boards[i][4][0] === "X" && boards[i][4][4] === "X")
             {
-                console.log("Linked four corners on board " + i);
+                console.log("%c Linked four corners on board " + i, "color:green");
             }
         }
     }

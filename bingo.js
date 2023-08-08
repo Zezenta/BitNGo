@@ -5,7 +5,8 @@ var bingo_letters = ["B", "I", "N", "G", "O"]; //this is useful to log things on
 var win_conditions = [wc_bingo, wc_full_table, wc_four_corners, wc_linked_four_corners]; //contains the functions of all win conditions
 var curr_wc = 0; //current win condition is normal bingo
 
-var boards_index = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
+var num_of_empty_arrays = 76;
+var boards_index = Array.from({ length: numEmptyArrays }, () => []);
 
 console.log("Current win condition is " + win_conditions[curr_wc].name);
 
@@ -29,7 +30,7 @@ function create_boards() //creates a number of boards depending on number_of_boa
                 }
                 used_numbers.push(newnum); //pushes the new number inside the used_numbers array
                 board[l].push(newnum); //pushes the new number inside its letter array
-                boards_index[newnum].push(id);
+                boards_index[newnum].push(id); //pushes the board id into the boards index
             }
         }
         boards.push(board); //pushes the new board inside the boards array
@@ -65,10 +66,9 @@ function play_chip() //normal function to pick a chip randomly
 
 function check_boards(ltr, nm) //puts chips in played numbers
 {
-    for(i=0; i<boards_index[nm].length; i++)
+    for(i=0; i<boards_index[nm].length; i++) //for every board id inside the played number array...
     {
-        boards[boards_index[nm][i]][ltr][boards[boards_index[nm][i]][ltr].indexOf(nm)] = "X";
-        boards[0][1][boards[0][1][boards[0][1].indexOf(56)]]
+        boards[boards_index[nm][i]][ltr][boards[boards_index[nm][i]][ltr].indexOf(nm)] = "X"; //look at said number inside the board that we are currently searching
     }
     console.table(boards[0]);
 }

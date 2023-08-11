@@ -6,7 +6,7 @@ var win_conditions = [wc_bingo, wc_full_table, wc_four_corners, wc_linked_four_c
 var curr_wc = 0; //current win condition is normal bingo
 
 var num_of_empty_arrays = 76;
-var boards_index = Array.from({ length: numEmptyArrays }, () => []);
+var boards_index = Array.from({ length: num_of_empty_arrays }, () => []);
 
 console.log("Current win condition is " + win_conditions[curr_wc].name);
 
@@ -18,7 +18,6 @@ function create_boards() //creates a number of boards depending on number_of_boa
         var id = i.toString(); //assigns an id to each board, starting from 0
         var board = [[],[],[],[],[]]; //a subarray for each bingo letter
         board.unshift(id); //puts the id before the letters on the board
-        console.table(board);
         for(l = 1; l<6; l++)
         {
             for(n = 0; n<5; n++)
@@ -37,6 +36,7 @@ function create_boards() //creates a number of boards depending on number_of_boa
     }
     for(i=0; i<boards.length; i++) //function that already puts a chip in the center of the board
     {
+        console.log("chip in the middle of boards " + i + " was " + boards[i][3][2])
         boards_index[boards[i][3][2]].splice(boards_index[boards[i][3][2]].indexOf(i), 1);
         boards[i][3][2] = "X";
     }
@@ -70,7 +70,9 @@ function check_boards(ltr, nm) //puts chips in played numbers
     {
         boards[boards_index[nm][i]][ltr][boards[boards_index[nm][i]][ltr].indexOf(nm)] = "X"; //look at said number inside the board that we are currently searching
     }
-    console.table(boards[0]);
+    boards.forEach(element => {
+        console.table(element);
+    })
 }
 
 function random(min, max) //randomize function

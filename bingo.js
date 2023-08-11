@@ -5,6 +5,8 @@ var bingo_letters = ["B", "I", "N", "G", "O"]; //this is useful to log things on
 var win_conditions = [wc_bingo, wc_full_table, wc_four_corners, wc_linked_four_corners]; //contains the functions of all win conditions
 var curr_wc = 0; //current win condition is normal bingo
 
+var center_numbers = []; //array that contains what used to be the center numbers of each board. DEVELOPER USE ONLY
+
 var num_of_empty_arrays = 76;
 var boards_index = Array.from({ length: num_of_empty_arrays }, () => []);
 
@@ -15,7 +17,7 @@ function create_boards() //creates a number of boards depending on number_of_boa
     for(i = 0; i<number_of_boards; i++)
     {
         var used_numbers = []; //contains all the already used numbers in the board
-        var id = i.toString(); //assigns an id to each board, starting from 0
+        var id = i; //assigns an id to each board, starting from 0
         var board = [[],[],[],[],[]]; //a subarray for each bingo letter
         board.unshift(id); //puts the id before the letters on the board
         for(l = 1; l<6; l++)
@@ -29,14 +31,14 @@ function create_boards() //creates a number of boards depending on number_of_boa
                 }
                 used_numbers.push(newnum); //pushes the new number inside the used_numbers array
                 board[l].push(newnum); //pushes the new number inside its letter array
-                boards_index[newnum].push(id); //pushes the board id into the boards index
+                boards_index[newnum].push(id); //pushes the board id into the boards index. its type is a number
             }
         }
         boards.push(board); //pushes the new board inside the boards array
     }
     for(i=0; i<boards.length; i++) //function that already puts a chip in the center of the board
     {
-        console.log("chip in the middle of boards " + i + " was " + boards[i][3][2])
+        center_numbers.push(boards[i][3][2]);
         boards_index[boards[i][3][2]].splice(boards_index[boards[i][3][2]].indexOf(i), 1);
         boards[i][3][2] = "X";
     }
@@ -152,4 +154,46 @@ function wc_linked_four_corners()
             }
         }
     }
+}
+
+
+
+//TEST FUNCTION
+function test_index()
+{
+    console.log("The center numbers used to be " + center_numbers);
+    boards.forEach(element =>{
+        console.log("The numbers for the letter N in " + element[0] + " are");
+        for(i=0; i<5; i++)
+        {   
+            if(typeof(element[3][i]) == "number")
+            {
+                //check if the numbers are in the index (good)
+                console.log(element[3][i])
+                if(boards_index[element[3][i]].includes(element[0]))
+                {
+                    console.log("%c Said number is in the index", "color:green");
+                }
+                else
+                {
+                    console.log("%c Said number is NOT in the index", "color:red");
+                }
+            }
+        }
+        //check if the center numbers are in the index (bad)
+        if(boards_index[center_numbers[element[0]]].includes(element[0]))
+        {
+            console.log("%c The middle number " + center_numbers[element[0]] + " IS in the index", "color:red");
+        }
+        else if(!boards_index[center_numbers[element[0]]].includes(element[0])){
+            console.log("%c The middle number " + center_numbers[element[0]] + " is NOT in the index", "color:green");
+        }
+    })
+
+    var sum = 0;
+    for(i=0; i<boards_index.length; i++)
+    {
+        sum += boards_index[i].length;
+    }
+    console.log("There is a total of " + sum + " elements in the index")
 }

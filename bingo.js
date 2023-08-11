@@ -157,8 +157,7 @@ function wc_linked_four_corners()
 }
 
 
-
-//TEST FUNCTION
+//TEST FUNCTIONS
 function test_index()
 {
     console.log("The center numbers used to be " + center_numbers);
